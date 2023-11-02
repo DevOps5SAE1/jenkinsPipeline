@@ -1,9 +1,21 @@
 pipeline {
-agent any
+    agent any
 
-        stage ('Build') {
-        	echo 'shell scripts to build project...'
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Building..'
+            }
         }
-       
-    
+        stage('Test') {
+            steps {
+                echo 'Testing..'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'Deploying....'
+            }
+        }
+    }
 }
