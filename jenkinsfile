@@ -1,0 +1,9 @@
+pipeline {
+agent any
+
+        stage ('Build') {
+        	echo 'shell scripts to build project...'
+        }
+       
+    
+}
