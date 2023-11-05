@@ -1,31 +1,63 @@
 pipeline {
     agent any
-    tools{
-    maven 'M2_HOME'
+
+ environment {
+        PATH = "/usr/share/maven/bin:$PATH"
+    }
+    tools {
+        maven 'M2_HOME'
     }
 
     stages {
-        stage('Build') {
+    stage('Check Environment') {
             steps {
-                
                 script {
-                    def javaVersion = sh(script: 'java -version 2>&1 | head -n 1 | awk -F "\"" \'{print $2}\'', returnStatus: true).trim()
-                    echo "JDK version: $javaVersion"
+                    sh 'echo "PATH: $PATH"'
+                    sh 'echo "MAVEN_HOME: $MAVEN_HOME"'
+                    sh 'echo "Maven Version: $(./mvnw -v)"'
                 }
-            
+            }
+        }
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        stage('Set Execute Permissions') {
+            steps {
+                script {
+                    sh 'chmod +x mvnw'
+                }
             }
         }
 
-
-        stage('Test') {
+       stage('Build ') {
             steps {
-                echo 'Testing..'
+                script {
+                    // Use 'mvn' from the agent's machine
+                    sh './mvnw clean package -DskipTests'
+                }
             }
         }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying....'
-            }
+
+        stage('Deploy to Nexus') {
+                    steps {
+                        script {
+                            // Deploy to Nexus
+                            sh './mvnw deploy'
+                        }
+                    }
+                }
+
+       
+    }
+
+    post {
+        success {
+            echo 'Build successful!'
+        }
+        failure {
+            echo 'Build failed!'
         }
     }
-}  
+}
