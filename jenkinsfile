@@ -12,6 +12,7 @@ pipeline {
         stage('Build') {
            sh 'mvn --version'
         }
+    }
 
         stage('Test') {
             steps {
