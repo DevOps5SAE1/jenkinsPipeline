@@ -1,19 +1,16 @@
 pipeline {
     agent any
     tools{
-    maven 'MAVEN'
+    maven 'M2_HOME'
     }
 
     stages {
         stage('Build') {
             steps {
                 script {
-                    def mavenVersion = sh(script: 'mvn -v', returnStatus: true).trim()
-                    if (mavenVersion.contains('Apache Maven')) {
-                        echo "Maven version: $mavenVersion"
-                    } else {
-                        error "Maven not found"
-                    }
+                    // Use the 'M2_HOME' Maven tool
+                    def mvnHome = tool name: 'M2_HOME', type: 'hudson.tasks.Maven$MavenInstallation'
+                    sh "${mvnHome}/bin/mvn -v"
                 }
             }
         }
