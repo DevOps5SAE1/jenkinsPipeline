@@ -1,14 +1,14 @@
-spipeline {
+pipeline {
     agent any
     tools{
-    maven 'M2_HOME'
+    maven 'MAVEN'
     }
 
     stages {
         stage('Build') {
             steps {
                 script {
-                    def mavenVersion = sh(script: 'mvn --version', returnStatus: true).trim()
+                    def mavenVersion = sh(script: 'mvn -v', returnStatus: true).trim()
                     if (mavenVersion.contains('Apache Maven')) {
                         echo "Maven version: $mavenVersion"
                     } else {
@@ -29,4 +29,4 @@ spipeline {
             }
         }
     }
-}  
+}   correct it
