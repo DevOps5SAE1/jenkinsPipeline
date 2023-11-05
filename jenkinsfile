@@ -1,7 +1,11 @@
 pipeline {
     agent any
-    tools{
-    maven 'M2_HOME'
+    options {
+        skipStagesAfterUnstable()
+    }
+    
+    tools {
+        maven 'M2_HOME'
     }
 
     stages {
@@ -20,9 +24,10 @@ pipeline {
 
         stage('Test') {
             steps {
-                echo 'Testing..'
+                echo 'Testing...'
             }
         }
+        
         stage('Deploy') {
             steps {
                 echo 'Deploying....'
