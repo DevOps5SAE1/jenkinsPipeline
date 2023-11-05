@@ -10,16 +10,7 @@ pipeline {
 
     stages {
         stage('Build') {
-            steps {
-                script {
-                    def mavenVersion = sh(script: 'mvn -v', returnStatus: true).trim()
-                    if (mavenVersion.contains('Apache Maven')) {
-                        echo "Maven version: $mavenVersion"
-                    } else {
-                        error "Maven not found"
-                    }
-                }
-            }
+           sh 'mvn --version'
         }
 
         stage('Test') {
