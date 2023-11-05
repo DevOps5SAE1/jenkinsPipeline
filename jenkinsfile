@@ -1,29 +1,32 @@
 pipeline {
     agent any
-    options {
-        skipStagesAfterUnstable()
-    }
-    
-    tools {
-        maven 'MAVEN'
+    tools{
+    maven 'M2_HOME'
     }
 
     stages {
         stage('Build') {
-           sh 'mvn --version'
+            steps {
+                script {
+                    def mavenVersion = sh(script: 'mvn -v', returnStatus: true).trim()
+                    if (mavenVersion.contains('Apache Maven')) {
+                        echo "Maven version: $mavenVersion"
+                    } else {
+                        error "Maven not found"
+                    }
+                }
+            }
         }
-    }
 
         stage('Test') {
             steps {
-                echo 'Testing...'
+                echo 'Testing..'
             }
         }
-        
         stage('Deploy') {
             steps {
                 echo 'Deploying....'
             }
         }
     }
-}
+}  
