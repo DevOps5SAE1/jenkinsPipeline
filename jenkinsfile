@@ -1,4 +1,4 @@
-pipeline {
+spipeline {
     agent any
     tools{
     maven 'MAVEN'
@@ -8,7 +8,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    def mavenVersion = sh(script: 'mvn -v', returnStatus: true).trim()
+                    def mavenVersion = sh(script: 'mvn --version', returnStatus: true).trim()
                     if (mavenVersion.contains('Apache Maven')) {
                         echo "Maven version: $mavenVersion"
                     } else {
